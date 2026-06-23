@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Flag Świata</title>
+<style>
+body{background:#121212;color:white;font-family:Arial;text-align:center;padding:20px}
+.container{max-width:700px;margin:auto;background:#1e1e1e;padding:20px;border-radius:15px}
+button{display:block;width:100%;margin:10px 0;padding:12px;background:#3b82f6;color:white;border:none;border-radius:10px}
+img{width:250px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🌍 Quiz Flag</h1>
+<div id="score">Punkty: 0/10</div>
+<div id="quiz"></div>
+</div>
+<script>
+const questions=[
+{flag:'https://flagcdn.com/w320/pl.png',answer:'Polska',options:['Polska','Austria','Monako','Indonezja']},
+{flag:'https://flagcdn.com/w320/fr.png',answer:'Francja',options:['Belgia','Rumunia','Francja','Włochy']},
+{flag:'https://flagcdn.com/w320/jp.png',answer:'Japonia',options:['Chiny','Japonia','Korea Południowa','Bangladesz']},
+{flag:'https://flagcdn.com/w320/br.png',answer:'Brazylia',options:['Argentyna','Brazylia','Meksyk','Kolumbia']}
+];
+let current=0,score=0;
+function load(){if(current>=questions.length){quiz.innerHTML='<h2>Koniec quizu!</h2>';return;}let q=questions[current];quiz.innerHTML=`<img src="${q.flag}">`+q.options.map(o=>`<button onclick="check('${o}')">${o}</button>`).join('');}
+function check(a){if(a===questions[current].answer)score++;document.getElementById('score').innerText=`Punkty: ${score}/10`;current++;load();}
+load();
+</script>
+</body></html>
