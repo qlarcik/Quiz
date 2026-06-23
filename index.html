@@ -4,29 +4,180 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz Flag Świata</title>
+
 <style>
-body{background:#121212;color:white;font-family:Arial;text-align:center;padding:20px}
-.container{max-width:700px;margin:auto;background:#1e1e1e;padding:20px;border-radius:15px}
-button{display:block;width:100%;margin:10px 0;padding:12px;background:#3b82f6;color:white;border:none;border-radius:10px}
-img{width:250px}
+body{
+    background:#121212;
+    color:white;
+    font-family:Arial,sans-serif;
+    text-align:center;
+    padding:20px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    background:#1e1e1e;
+    padding:25px;
+    border-radius:15px;
+}
+
+img{
+    width:250px;
+    border-radius:10px;
+    border:2px solid #444;
+}
+
+button{
+    display:block;
+    width:100%;
+    margin:10px 0;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#3b82f6;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#2563eb;
+}
+
+#score{
+    color:#4ade80;
+    font-size:20px;
+    margin-bottom:15px;
+}
+
+#progress{
+    margin-bottom:15px;
+}
 </style>
 </head>
 <body>
+
 <div class="container">
-<h1>🌍 Quiz Flag</h1>
+<h1>🌍 Quiz Flag Świata</h1>
 <div id="score">Punkty: 0/10</div>
+<div id="progress">Pytanie 1 z 10</div>
 <div id="quiz"></div>
 </div>
+
 <script>
-const questions=[
-{flag:'https://flagcdn.com/w320/pl.png',answer:'Polska',options:['Polska','Austria','Monako','Indonezja']},
-{flag:'https://flagcdn.com/w320/fr.png',answer:'Francja',options:['Belgia','Rumunia','Francja','Włochy']},
-{flag:'https://flagcdn.com/w320/jp.png',answer:'Japonia',options:['Chiny','Japonia','Korea Południowa','Bangladesz']},
-{flag:'https://flagcdn.com/w320/br.png',answer:'Brazylia',options:['Argentyna','Brazylia','Meksyk','Kolumbia']}
+
+let questions = [
+{
+flag:"https://flagcdn.com/w320/ca.png",
+answer:"Kanada",
+options:["Kanada","USA","Australia","Nowa Zelandia"]
+},
+{
+flag:"https://flagcdn.com/w320/no.png",
+answer:"Norwegia",
+options:["Szwecja","Finlandia","Norwegia","Dania"]
+},
+{
+flag:"https://flagcdn.com/w320/ar.png",
+answer:"Argentyna",
+options:["Urugwaj","Argentyna","Chile","Paragwaj"]
+},
+{
+flag:"https://flagcdn.com/w320/is.png",
+answer:"Islandia",
+options:["Norwegia","Islandia","Finlandia","Szwecja"]
+},
+{
+flag:"https://flagcdn.com/w320/kz.png",
+answer:"Kazachstan",
+options:["Kazachstan","Mongolia","Uzbekistan","Kirgistan"]
+},
+{
+flag:"https://flagcdn.com/w320/mg.png",
+answer:"Madagaskar",
+options:["Etiopia","Uganda","Madagaskar","Mozambik"]
+},
+{
+flag:"https://flagcdn.com/w320/za.png",
+answer:"Republika Południowej Afryki",
+options:["Nigeria","Kenia","RPA","Republika Południowej Afryki"]
+},
+{
+flag:"https://flagcdn.com/w320/bt.png",
+answer:"Bhutan",
+options:["Nepal","Bhutan","Kazachstan","Mongolia"]
+},
+{
+flag:"https://flagcdn.com/w320/sc.png",
+answer:"Seszele",
+options:["Mauritius","Malediwy","Seszele","Fidżi"]
+},
+{
+flag:"https://flagcdn.com/w320/np.png",
+answer:"Nepal",
+options:["Bhutan","Nepal","Sri Lanka","Laos"]
+}
 ];
-let current=0,score=0;
-function load(){if(current>=questions.length){quiz.innerHTML='<h2>Koniec quizu!</h2>';return;}let q=questions[current];quiz.innerHTML=`<img src="${q.flag}">`+q.options.map(o=>`<button onclick="check('${o}')">${o}</button>`).join('');}
-function check(a){if(a===questions[current].answer)score++;document.getElementById('score').innerText=`Punkty: ${score}/10`;current++;load();}
-load();
+
+questions.sort(() => Math.random() - 0.5);
+
+let current = 0;
+let score = 0;
+
+function loadQuestion(){
+
+if(current >= questions.length){
+
+let rank = "";
+
+if(score <= 3) rank = "Początkujący";
+else if(score <= 6) rank = "Średnio zaawansowany";
+else if(score <= 8) rank = "Ekspert";
+else rank = "Mistrz Flag";
+
+document.getElementById("quiz").innerHTML =
+`<h2>🎉 Koniec quizu!</h2>
+<h3>${score}/10 punktów</h3>
+<h2>${rank}</h2>`;
+
+document.getElementById("progress").innerHTML = "";
+return;
+}
+
+document.getElementById("progress").innerHTML =
+`Pytanie ${current+1} z 10`;
+
+let q = questions[current];
+
+let html =
+`<img src="${q.flag}"><br>`;
+
+q.options.sort(() => Math.random() - 0.5);
+
+q.options.forEach(option => {
+html += `<button onclick="checkAnswer('${option}')">${option}</button>`;
+});
+
+document.getElementById("quiz").innerHTML = html;
+}
+
+function checkAnswer(answer){
+
+if(answer === questions[current].answer){
+score++;
+}
+
+document.getElementById("score").innerHTML =
+`Punkty: ${score}/10`;
+
+current++;
+loadQuestion();
+}
+
+loadQuestion();
+
 </script>
-</body></html>
+
+</body>
+</html>
